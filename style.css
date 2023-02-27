@@ -14,8 +14,18 @@ body{
 .buttons{
     display: grid;
     grid-template-columns: 25% 25% 25% 25%;
+    grid-gap: 8px;
+}
+
+.buttons > button{
+    border-radius: 8px;
+    font-size: 24px;
 }
 
 .display{
     text-align: right;
+}
+
+.yellow{
+    background : rgb(255, 238, 0)
 }
