@@ -1,4 +1,21 @@
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin : 0;
+    height: 100vh;
+}
+
+.calculator{
+    width: 350px;
+    height: 500px;
+}
+
 .buttons{
     display: grid;
     grid-template-columns: 25% 25% 25% 25%;
+}
+
+.display{
+    text-align: right;
 }
