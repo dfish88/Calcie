@@ -1,14 +1,18 @@
-const add = { operation : (a,b) => a+b };
-const sub = { operation : (a,b) => a-b };
-const mult = { operation : (a,b) => a*b };
-const div = { operation : (a,b) => b === 0 ? undefined : a/b };
-
-const ui = {
-    display : document.querySelector('.display')
+const operators = {
+    '+' : (a,b) => a+b,
+    '–' : (a,b) => a-b,
+    '×' : (a,b) => a*b,
+    '÷' : (a,b) => b === 0 ? undefined : a/b
 }
 
-function operate(operateObject, a, b){
-    return operateObject.operation(a,b);
+const ui = {
+    display : document.querySelector('.display'),
+    digitButton : document.querySelectorAll('.digit'),
+    operatorButton : document.querySelectorAll('.operator')
+}
+
+function operate(operator, a, b){
+    return operators[operator](a,b);
 }
 
 function operatorClick(operator){
@@ -22,8 +26,7 @@ function digitClick(digit){
 }
 
 function setupDigitButtons(){
-    let digitButton = document.querySelectorAll('.digit');
-    digitButton.forEach( (button) =>{
+    ui.digitButton.forEach( (button) =>{
         button.addEventListener('click', (e) => {
             digitClick(e.target.textContent);
         });
@@ -31,8 +34,7 @@ function setupDigitButtons(){
 }
 
 function setupOperatorButtons(){
-    let operatorButton = document.querySelectorAll('.operator');
-    operatorButton.forEach( (button) =>{
+    ui.operatorButton.forEach( (button) =>{
         button.addEventListener('click', (e) => {
             operatorClick(e.target.textContent);
         });
