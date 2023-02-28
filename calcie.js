@@ -1,8 +1,3 @@
-const ui = {
-    digitButton : document.querySelectorAll('.digit'),
-    display : document.querySelector('.display')
-}
-
 const add = { operation : (a,b) => a+b };
 const sub = { operation : (a,b) => a-b };
 const mult = { operation : (a,b) => a*b };
@@ -13,9 +8,12 @@ function operate(operateObject, a, b){
 }
 
 function setupDigitButtons(){
-    ui.digitButton.forEach( (button) =>{
+    let digitButton = document.querySelectorAll('.digit');
+    let display = document.querySelector('.display');
+
+    digitButton.forEach( (button) =>{
         button.addEventListener('click', (e) => {
-            ui.display.textContent = ui.display.textContent + e.target.textContent;
+            display.textContent = display.textContent + e.target.textContent;
         });
     });
 }
