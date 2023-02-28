@@ -11,10 +11,11 @@ body{
     flex-direction: column;
     gap: 24px;
     width: 300px;
-    height: 500px;
+    height: auto;
     background : rgb(85, 84, 84);
     padding : 25px;
     border-radius: 24px;
+    box-shadow: 6px 6px 12px;
 }
 
 .buttons{
@@ -23,19 +24,40 @@ body{
     gap : 8px;
 }
 
-.buttons > button{
+button{
     font-size: 24px;
     border-radius: 50%;
     padding: 1rem 0;
     border-style: hidden;
+    box-shadow: 3px 3px 4px;
 }
 
 .display{
     text-align: right;
     font-size: 32px;
     background: grey;
-    height : 75px;
+    height : auto;
     border-radius: 12px;
+    padding: 8px;
+    box-shadow: -2px -2px 4px;
+}
+
+.delete{
+    grid-column-start: 1;
+    grid-column-end: 3;
+    border-radius: 24px;
+    background: rgb(248, 122, 64)
+}
+
+.equals{
+    grid-column-start: 3;
+    grid-column-end: 5;
+    border-radius: 24px;
+    background : rgb(2, 172, 2)
+}
+
+.clear{
+    background: rgb(111, 146, 252)
 }
 
 .yellow{
