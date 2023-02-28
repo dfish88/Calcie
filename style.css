@@ -40,6 +40,7 @@ button:hover{
 .display{
     text-align: right;
     font-size: 32px;
+    font-weight: bold;
     background: rgb(175, 174, 174);
     height : 2em;
     border-radius: 12px;
@@ -49,6 +50,11 @@ button:hover{
 
 .upper, .lower{
     height: 1em;
+}
+
+.upper{
+    font-size: 24px;
+    font-weight: lighter;
 }
 
 .delete{
