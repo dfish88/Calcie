@@ -6,12 +6,20 @@ const operators = {
 }
 
 var replace = true;
+var equals = false;
+
+const currentCalculation ={
+    a : null,
+    b : null,
+    op : ''
+}
 
 const ui = {
     lowerDisplay : document.querySelector('.lower'),
     upperDisplay : document.querySelector('.upper'),
     digitButton : document.querySelectorAll('.digit'),
-    operatorButton : document.querySelectorAll('.operator')
+    operatorButtons : document.querySelectorAll('.operator'),
+    equalButton : document.querySelector('.equals')
 }
 
 function operate(operator, a, b){
@@ -33,8 +41,27 @@ function operatorClick(operator){
 }
 
 function digitClick(digit){
+    if (equals){
+        ui.upperDisplay.textContent = '';
+        ui.lowerDisplay.textContent = '';
+        equals = false;
+    }
     ui.lowerDisplay.textContent = replace ? digit : ui.lowerDisplay.textContent + digit;
     replace = false;
+}
+
+function equalsClick(){
+    if(!equals){
+        currentCalculation.a = ui.upperDisplay.textContent.match(/[0-9]+/g).map( (s) => parseInt(s))[0];
+        currentCalculation.b = ui.lowerDisplay.textContent.match(/[0-9]+/g).map( (s) => parseInt(s))[0];
+        currentCalculation.op = ui.upperDisplay.textContent.slice(-1);
+    }
+
+    let results = operate(currentCalculation.op, currentCalculation.a, currentCalculation.b);
+    ui.upperDisplay.textContent = currentCalculation.a + currentCalculation.op + currentCalculation.b + '='
+    ui.lowerDisplay.textContent = results;
+    currentCalculation.a = results;
+    equals = true;
 }
 
 function setupDigitButtons(){
@@ -46,7 +73,7 @@ function setupDigitButtons(){
 }
 
 function setupOperatorButtons(){
-    ui.operatorButton.forEach( (button) =>{
+    ui.operatorButtons.forEach( (button) =>{
         button.addEventListener('click', (e) => {
             operatorClick(e.target.textContent);
         });
@@ -54,9 +81,16 @@ function setupOperatorButtons(){
 
 }
 
+function setupEqualsButton(){
+    ui.equalButton.addEventListener('click', (e) => {
+        equalsClick();
+    })
+}
+
 function setup(){
     setupDigitButtons();
     setupOperatorButtons();
+    setupEqualsButton();
 }
 
 setup();
