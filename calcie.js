@@ -5,8 +5,11 @@ const operators = {
     '÷' : (a,b) => b === 0 ? undefined : a/b
 }
 
+var replace = true;
+
 const ui = {
-    display : document.querySelector('.display'),
+    lowerDisplay : document.querySelector('.lower'),
+    upperDisplay : document.querySelector('.upper'),
     digitButton : document.querySelectorAll('.digit'),
     operatorButton : document.querySelectorAll('.operator')
 }
@@ -16,13 +19,22 @@ function operate(operator, a, b){
 }
 
 function operatorClick(operator){
-    // replace operator on screen if operators are clicked consecutively
-    let justDigits = ui.display.textContent.match(/[0-9]+/)[0];
-    ui.display.textContent = justDigits + operator;
+    let operand = ui.lowerDisplay.textContent.match(/[0-9]+/g).map( (s) => parseInt(s))[0];
+    let results = operand;
+
+    if (!replace && ui.upperDisplay.textContent){
+        let a = ui.upperDisplay.textContent.match(/[0-9]+/g).map( (s) => parseInt(s))[0];
+        let op = ui.upperDisplay.textContent.slice(-1);
+        results = operate(op, a, operand);
+        ui.lowerDisplay.textContent = results;
+    }
+    ui.upperDisplay.textContent = results + operator;
+    replace = true
 }
 
 function digitClick(digit){
-    ui.display.textContent = ui.display.textContent + digit;
+    ui.lowerDisplay.textContent = replace ? digit : ui.lowerDisplay.textContent + digit;
+    replace = false;
 }
 
 function setupDigitButtons(){
