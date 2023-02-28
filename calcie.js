@@ -15,7 +15,7 @@ function operate(operateObject, a, b){
 function setupDigitButtons(){
     ui.digitButton.forEach( (button) =>{
         button.addEventListener('click', (e) => {
-            ui.display.textContent = ui.display.textContent + e.target.id;
+            ui.display.textContent = ui.display.textContent + e.target.textContent;
         });
     });
 }
