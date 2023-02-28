@@ -17,13 +17,15 @@ function operatorClick(operator){
     ui.display.textContent = justDigits + operator;
 }
 
+function digitClick(digit){
+    ui.display.textContent = ui.display.textContent + digit;
+}
+
 function setupDigitButtons(){
     let digitButton = document.querySelectorAll('.digit');
-    let display = document.querySelector('.display');
-
     digitButton.forEach( (button) =>{
         button.addEventListener('click', (e) => {
-            display.textContent = display.textContent + e.target.textContent;
+            digitClick(e.target.textContent);
         });
     });
 }
