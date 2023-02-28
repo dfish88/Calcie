@@ -18,8 +18,21 @@ function setupDigitButtons(){
     });
 }
 
+function setupOperatorButtons(){
+    let operatorButton = document.querySelectorAll('.operator');
+    let display = document.querySelector('.display');
+
+    operatorButton.forEach( (button) =>{
+        button.addEventListener('click', (e) => {
+            display.textContent = display.textContent + e.target.textContent;
+        });
+    });
+
+}
+
 function setup(){
     setupDigitButtons();
+    setupOperatorButtons();
 }
 
 setup();
