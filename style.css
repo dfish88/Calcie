@@ -4,6 +4,7 @@ body{
     align-items: center;
     margin : 0;
     height: 100vh;
+    background : rgb(32, 31, 31);
 }
 
 .calculator{
@@ -30,6 +31,10 @@ button{
     padding: 1rem 0;
     border-style: hidden;
     box-shadow: 3px 3px 4px;
+}
+
+button:hover{
+    transform: scale(1.05);
 }
 
 .display{
