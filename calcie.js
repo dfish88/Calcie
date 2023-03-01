@@ -27,16 +27,25 @@ function operate(operator, a, b){
 }
 
 function operatorClick(operator){
-    let operand = ui.lowerDisplay.textContent.match(/[0-9]+/g).map( (s) => parseInt(s))[0];
-    let results = operand;
-
-    if (!replace && ui.upperDisplay.textContent){
-        let a = ui.upperDisplay.textContent.match(/[0-9]+/g).map( (s) => parseInt(s))[0];
-        let op = ui.upperDisplay.textContent.slice(-1);
-        results = operate(op, a, operand);
-        ui.lowerDisplay.textContent = results;
+    if (!currentCalculation.a){
+        currentCalculation.a = ui.lowerDisplay.textContent.match(/[0-9]+/g).map( (s) => parseInt(s))[0];
+        currentCalculation.op = operator;
     }
-    ui.upperDisplay.textContent = results + operator;
+    else{
+
+        if(replace){
+            currentCalculation.op = operator;
+        }
+        else{
+            currentCalculation.b = ui.lowerDisplay.textContent.match(/[0-9]+/g).map( (s) => parseInt(s))[0];
+            let results = operate(currentCalculation.op, currentCalculation.a, currentCalculation.b);
+            ui.lowerDisplay.textContent = results;
+            currentCalculation.a = results;
+            currentCalculation.op = operator;
+        }
+
+    }
+    ui.upperDisplay.textContent = currentCalculation.a + currentCalculation.op;
     replace = true
 }
 
@@ -45,6 +54,9 @@ function digitClick(digit){
         ui.upperDisplay.textContent = '';
         ui.lowerDisplay.textContent = '';
         equals = false;
+        currentCalculation.a = null;
+        currentCalculation.b = null;
+        currentCalculation.op = null;
     }
     ui.lowerDisplay.textContent = replace ? digit : ui.lowerDisplay.textContent + digit;
     replace = false;
