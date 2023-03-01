@@ -5,6 +5,7 @@ const operators = {
     '÷' : (a,b) => b === 0 ? undefined : a/b
 }
 
+const regexDecimal = /[0-9]+[.]*[0-9]*/g;
 var replace = true;
 var equalsRepeat = false;
 
@@ -20,7 +21,8 @@ const ui = {
     digitButton : document.querySelectorAll('.digit'),
     operatorButtons : document.querySelectorAll('.operator'),
     equalButton : document.querySelector('.equals'),
-    clearButton : document.querySelector('.clear')
+    clearButton : document.querySelector('.clear'),
+    decimalButton : document.querySelector('.decimal')
 }
 
 function operate(operator, a, b){
@@ -29,7 +31,7 @@ function operate(operator, a, b){
 
 function operatorClick(operator){
     if (!currentCalculation.a){
-        currentCalculation.a = ui.lowerDisplay.textContent.match(/[0-9]+/g).map( (s) => parseInt(s))[0];
+        currentCalculation.a = ui.lowerDisplay.textContent.match(regexDecimal).map( (s) => parseFloat(s))[0];
         currentCalculation.op = operator;
     }
     else{
@@ -38,7 +40,7 @@ function operatorClick(operator){
             currentCalculation.op = operator;
         }
         else{
-            currentCalculation.b = ui.lowerDisplay.textContent.match(/[0-9]+/g).map( (s) => parseInt(s))[0];
+            currentCalculation.b = ui.lowerDisplay.textContent.match(regexDecimal).map( (s) => parseFloat(s))[0];
             let results = operate(currentCalculation.op, currentCalculation.a, currentCalculation.b);
             ui.lowerDisplay.textContent = results;
             currentCalculation.a = results;
@@ -67,8 +69,8 @@ function equalsClick(){
     if (!currentCalculation.a) return;
 
     if(!equalsRepeat){
-        currentCalculation.a = ui.upperDisplay.textContent.match(/[0-9]+/g).map( (s) => parseInt(s))[0];
-        currentCalculation.b = ui.lowerDisplay.textContent.match(/[0-9]+/g).map( (s) => parseInt(s))[0];
+        currentCalculation.a = ui.upperDisplay.textContent.match(regexDecimal).map( (s) => parseFloat(s))[0];
+        currentCalculation.b = ui.lowerDisplay.textContent.match(regexDecimal).map( (s) => parseFloat(s))[0];
         currentCalculation.op = ui.upperDisplay.textContent.slice(-1);
         equalsRepeat = true;
     }
@@ -112,11 +114,19 @@ function setupClearButton(){
     });
 }
 
+function setupDecimalButton(){
+    ui.decimalButton.addEventListener('click', () =>{
+        ui.lowerDisplay.textContent = ui.lowerDisplay.textContent + '.';
+        replace = false;
+    });
+}
+
 function setup(){
     setupDigitButtons();
     setupOperatorButtons();
     setupEqualsButton();
     setupClearButton();
+    setupDecimalButton();
 }
 
 setup();
