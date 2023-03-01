@@ -57,7 +57,7 @@ button:hover{
     font-weight: lighter;
 }
 
-.delete{
+.clear{
     background: rgb(248, 122, 64);
 }
 
@@ -70,10 +70,6 @@ button:hover{
 
 .square, .sign{
     background: rgb(165, 164, 164);
-}
-
-.clear{
-    background: rgb(111, 146, 252)
 }
 
 .operator{
