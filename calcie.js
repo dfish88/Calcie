@@ -6,7 +6,7 @@ const operators = {
 }
 
 var replace = true;
-var equals = false;
+var equalsRepeat = false;
 
 const currentCalculation ={
     a : null,
@@ -19,7 +19,8 @@ const ui = {
     upperDisplay : document.querySelector('.upper'),
     digitButton : document.querySelectorAll('.digit'),
     operatorButtons : document.querySelectorAll('.operator'),
-    equalButton : document.querySelector('.equals')
+    equalButton : document.querySelector('.equals'),
+    clearButton : document.querySelector('.clear')
 }
 
 function operate(operator, a, b){
@@ -50,30 +51,32 @@ function operatorClick(operator){
 }
 
 function digitClick(digit){
-    if (equals){
+    if (equalsRepeat){
         ui.upperDisplay.textContent = '';
         ui.lowerDisplay.textContent = '';
-        equals = false;
         currentCalculation.a = null;
         currentCalculation.b = null;
         currentCalculation.op = null;
+        equalsRepeat = false;
     }
     ui.lowerDisplay.textContent = replace ? digit : ui.lowerDisplay.textContent + digit;
     replace = false;
 }
 
 function equalsClick(){
-    if(!equals){
+    if (!currentCalculation.a) return;
+
+    if(!equalsRepeat){
         currentCalculation.a = ui.upperDisplay.textContent.match(/[0-9]+/g).map( (s) => parseInt(s))[0];
         currentCalculation.b = ui.lowerDisplay.textContent.match(/[0-9]+/g).map( (s) => parseInt(s))[0];
         currentCalculation.op = ui.upperDisplay.textContent.slice(-1);
+        equalsRepeat = true;
     }
 
     let results = operate(currentCalculation.op, currentCalculation.a, currentCalculation.b);
     ui.upperDisplay.textContent = currentCalculation.a + currentCalculation.op + currentCalculation.b + '='
     ui.lowerDisplay.textContent = results;
     currentCalculation.a = results;
-    equals = true;
 }
 
 function setupDigitButtons(){
@@ -99,10 +102,21 @@ function setupEqualsButton(){
     })
 }
 
+function setupClearButton(){
+    ui.clearButton.addEventListener('click', () =>{
+        ui.lowerDisplay.textContent = 0;
+        ui.upperDisplay.textContent = '';
+        currentCalculation.a = null;
+        currentCalculation.b = null;
+        currentCalculation.op = '';
+    });
+}
+
 function setup(){
     setupDigitButtons();
     setupOperatorButtons();
     setupEqualsButton();
+    setupClearButton();
 }
 
 setup();
