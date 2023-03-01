@@ -29,6 +29,60 @@ const roundConstant = 1000000000000;
 var waitingForDigit = true; // Flag to allow operator buttons to replace current operator
 var equalsRepeat = false; // Flag to allow equals button to repeat operation
 
+
+/* SETUP FUNCTIONS */
+
+function setupDigitButtons(){
+    ui.digitButton.forEach( (button) =>{
+        button.addEventListener('click', (e) => {
+            digitClick(e.target.textContent);
+        });
+    });
+}
+
+function setupOperatorButtons(){
+    ui.operatorButtons.forEach( (button) =>{
+        button.addEventListener('click', (e) => {
+            operatorClick(e.target.textContent);
+        });
+    });
+
+}
+
+function setupEqualsButton(){
+    ui.equalButton.addEventListener('click', (e) => {
+        equalsClick();
+    })
+}
+
+function setupClearButton(){
+    ui.clearButton.addEventListener('click', () =>{
+        ui.lowerDisplay.textContent = 0;
+        ui.upperDisplay.textContent = '';
+        calculation.a = null;
+        calculation.b = null;
+        calculation.op = '';
+        waitingForDigit = true;
+    });
+}
+
+function setupDecimalButton(){
+    ui.decimalButton.addEventListener('click', () =>{
+        ui.lowerDisplay.textContent = ui.lowerDisplay.textContent + '.';
+        waitingForDigit = false;
+    });
+}
+
+function setup(){
+    setupDigitButtons();
+    setupOperatorButtons();
+    setupEqualsButton();
+    setupClearButton();
+    setupDecimalButton();
+}
+
+
+
 function formatLargeNumber(bigNum){
     return bigNum >= roundConstant ? bigNum.toExponential(expDigits) : bigNum;
 }
@@ -93,55 +147,6 @@ function equalsClick(){
     ui.upperDisplay.textContent = formatLargeNumber(calculation.a) + calculation.op + formatLargeNumber(calculation.b) + '=';
     ui.lowerDisplay.textContent = formatLargeNumber(results);
     calculation.a = results;
-}
-
-function setupDigitButtons(){
-    ui.digitButton.forEach( (button) =>{
-        button.addEventListener('click', (e) => {
-            digitClick(e.target.textContent);
-        });
-    });
-}
-
-function setupOperatorButtons(){
-    ui.operatorButtons.forEach( (button) =>{
-        button.addEventListener('click', (e) => {
-            operatorClick(e.target.textContent);
-        });
-    });
-
-}
-
-function setupEqualsButton(){
-    ui.equalButton.addEventListener('click', (e) => {
-        equalsClick();
-    })
-}
-
-function setupClearButton(){
-    ui.clearButton.addEventListener('click', () =>{
-        ui.lowerDisplay.textContent = 0;
-        ui.upperDisplay.textContent = '';
-        calculation.a = null;
-        calculation.b = null;
-        calculation.op = '';
-        waitingForDigit = true;
-    });
-}
-
-function setupDecimalButton(){
-    ui.decimalButton.addEventListener('click', () =>{
-        ui.lowerDisplay.textContent = ui.lowerDisplay.textContent + '.';
-        waitingForDigit = false;
-    });
-}
-
-function setup(){
-    setupDigitButtons();
-    setupOperatorButtons();
-    setupEqualsButton();
-    setupClearButton();
-    setupDecimalButton();
 }
 
 setup();
