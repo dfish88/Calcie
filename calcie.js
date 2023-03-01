@@ -97,9 +97,10 @@ function getOperand(){
 }
 
 function operatorClick(operator){
-    if (!calculation.a){
+    if (!calculation.a || equalsRepeat){
         calculation.a = getOperand();
         calculation.op = operator;
+        equalsRepeat = false;
     }
     else{
 
