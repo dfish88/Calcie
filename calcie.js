@@ -1,20 +1,3 @@
-const operators = {
-    '+' : (a,b) => a+b,
-    '–' : (a,b) => a-b,
-    '×' : (a,b) => a*b,
-    '÷' : (a,b) => b === 0 ? undefined : a/b
-}
-
-const regexDecimal = /[0-9]+[.]*[0-9]*/g;
-var replace = true;
-var equalsRepeat = false;
-
-const currentCalculation ={
-    a : null,
-    b : null,
-    op : ''
-}
-
 const ui = {
     lowerDisplay : document.querySelector('.lower'),
     upperDisplay : document.querySelector('.upper'),
@@ -24,6 +7,23 @@ const ui = {
     clearButton : document.querySelector('.clear'),
     decimalButton : document.querySelector('.decimal')
 }
+
+const operators = {
+    '+' : (a,b) => a+b,
+    '–' : (a,b) => a-b,
+    '×' : (a,b) => a*b,
+    '÷' : (a,b) => b === 0 ? undefined : a/b
+}
+
+const currentCalculation ={
+    a : null,
+    b : null,
+    op : ''
+}
+
+const regexDecimal = /[0-9]+[.]*[0-9]*/g;
+var waitingForDigit = true; // Flag to allow operator buttons to replace current operator
+var equalsRepeat = false; // Flag to allow equals button to repeat operation
 
 function operate(operator, a, b){
     return operators[operator](a,b);
@@ -36,7 +36,8 @@ function operatorClick(operator){
     }
     else{
 
-        if(replace){
+        // Replace operator if pressed when expecting second operand
+        if(waitingForDigit){
             currentCalculation.op = operator;
         }
         else{
@@ -49,7 +50,7 @@ function operatorClick(operator){
 
     }
     ui.upperDisplay.textContent = currentCalculation.a + currentCalculation.op;
-    replace = true
+    waitingForDigit = true
 }
 
 function digitClick(digit){
@@ -61,8 +62,8 @@ function digitClick(digit){
         currentCalculation.op = null;
         equalsRepeat = false;
     }
-    ui.lowerDisplay.textContent = replace ? digit : ui.lowerDisplay.textContent + digit;
-    replace = false;
+    ui.lowerDisplay.textContent = waitingForDigit ? digit : ui.lowerDisplay.textContent + digit;
+    waitingForDigit = false;
 }
 
 function equalsClick(){
@@ -117,7 +118,7 @@ function setupClearButton(){
 function setupDecimalButton(){
     ui.decimalButton.addEventListener('click', () =>{
         ui.lowerDisplay.textContent = ui.lowerDisplay.textContent + '.';
-        replace = false;
+        waitingForDigit = false;
     });
 }
 
