@@ -22,6 +22,8 @@ const currentCalculation ={
 }
 
 const regexDecimal = /[0-9]+[.]*[0-9]*/g;
+const maxDigits = 1000000000000000000;
+
 var waitingForDigit = true; // Flag to allow operator buttons to replace current operator
 var equalsRepeat = false; // Flag to allow equals button to repeat operation
 
@@ -62,7 +64,8 @@ function digitClick(digit){
         currentCalculation.op = null;
         equalsRepeat = false;
     }
-    ui.lowerDisplay.textContent = waitingForDigit ? digit : ui.lowerDisplay.textContent + digit;
+    ui.lowerDisplay.textContent = waitingForDigit ? digit :
+        Math.round(parseFloat(ui.lowerDisplay.textContent + digit) * maxDigits) / maxDigits;
     waitingForDigit = false;
 }
 
@@ -112,6 +115,7 @@ function setupClearButton(){
         currentCalculation.a = null;
         currentCalculation.b = null;
         currentCalculation.op = '';
+        waitingForDigit = true;
     });
 }
 
