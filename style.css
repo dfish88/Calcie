@@ -61,6 +61,10 @@ button:hover{
     background: rgb(248, 122, 64);
 }
 
+.delete{
+    background: rgb(90, 128, 252);
+}
+
 .equals{
     grid-column-start: 3;
     grid-column-end: 5;
