@@ -5,7 +5,8 @@ const ui = {
     operatorButtons : document.querySelectorAll('.operator'),
     equalButton : document.querySelector('.equals'),
     clearButton : document.querySelector('.clear'),
-    decimalButton : document.querySelector('.decimal')
+    decimalButton : document.querySelector('.decimal'),
+    signButton : document.querySelector('.sign')
 }
 
 const operators = {
@@ -21,7 +22,7 @@ const calculation ={
     op : ''
 }
 
-const regexDecimal = /[0-9]+[.]*[0-9]*/g;
+const regexDecimal = /[-]*[0-9]+[.]*[0-9]*/g;
 const maxDigits = 16;
 const expDigits = 8;
 const roundConstant = 1000000000000;
@@ -73,12 +74,19 @@ function setupDecimalButton(){
     });
 }
 
+function setupSignButton(){
+    ui.signButton.addEventListener('click', () =>{
+        if (ui.lowerDisplay.textContent != 0) ui.lowerDisplay.textContent =  '-' + ui.lowerDisplay.textContent;
+    });
+}
+
 function setup(){
     setupDigitButtons();
     setupOperatorButtons();
     setupEqualsButton();
     setupClearButton();
     setupDecimalButton();
+    setupSignButton();
 }
 
 
