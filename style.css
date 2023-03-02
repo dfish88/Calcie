@@ -37,6 +37,10 @@ button:hover{
     transform: scale(1.05);
 }
 
+button:active{
+    transform: translateY(4px);
+}
+
 .display{
     text-align: right;
     font-size: 32px;
