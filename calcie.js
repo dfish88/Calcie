@@ -1,3 +1,8 @@
+const regexDecimal = /[-]*[0-9]+[.]*[0-9]*/g;
+const maxDigits = 16;
+const expDigits = 8;
+const roundConstant = 1000000000000;
+
 const ui = {
     lowerDisplay : document.querySelector('.lower'),
     upperDisplay : document.querySelector('.upper'),
@@ -5,6 +10,7 @@ const ui = {
     operatorButtons : document.querySelectorAll('.operator'),
     equalButton : document.querySelector('.equals'),
     clearButton : document.querySelector('.clear'),
+    deleteButton : document.querySelector('.delete'),
     decimalButton : document.querySelector('.decimal'),
     signButton : document.querySelector('.sign')
 }
@@ -13,7 +19,8 @@ const operators = {
     '+' : (a,b) => a+b,
     '–' : (a,b) => a-b,
     '×' : (a,b) => a*b,
-    '÷' : (a,b) => b === 0 ? undefined : a/b
+    '÷' : (a,b) => b === 0 ? undefined : a/b,
+    '^' : (a,b) => Math.pow(a,b)
 }
 
 const calculation ={
@@ -22,14 +29,32 @@ const calculation ={
     op : ''
 }
 
-const regexDecimal = /[-]*[0-9]+[.]*[0-9]*/g;
-const maxDigits = 16;
-const expDigits = 8;
-const roundConstant = 1000000000000;
+const keys = {
+    '0' : () => digitClick('0'),
+    '1' : () =>  digitClick('1'),
+    '2' : () =>  digitClick('2'),
+    '3' : () =>  digitClick('3'),
+    '4' : () =>  digitClick('4'),
+    '5' : () =>  digitClick('5'),
+    '6' : () =>  digitClick('6'),
+    '7' : () =>  digitClick('7'),
+    '8' : () =>  digitClick('8'),
+    '9' : () =>  digitClick('9'),
+
+    '.' : () =>  decimalClick(),
+
+    '+' : () =>  operatorClick('+'),
+    '*' : () =>  operatorClick('×'),
+    '/' : () =>  operatorClick('÷'),
+    '-' : () =>  operatorClick('-'),
+    '^' : () =>  operatorClick('^'),
+
+    'Enter' : () =>  equalsClick(),
+    'Backspace' : () => clearClick()
+}
 
 var waitingForDigit = true; // Flag to allow operator buttons to replace current operator
 var equalsRepeat = false; // Flag to allow equals button to repeat operation
-
 
 /* SETUP FUNCTIONS */
 
@@ -47,7 +72,6 @@ function setupOperatorButtons(){
             operatorClick(e.target.textContent);
         });
     });
-
 }
 
 function setupEqualsButton(){
@@ -58,19 +82,13 @@ function setupEqualsButton(){
 
 function setupClearButton(){
     ui.clearButton.addEventListener('click', () =>{
-        ui.lowerDisplay.textContent = 0;
-        ui.upperDisplay.textContent = '';
-        calculation.a = null;
-        calculation.b = null;
-        calculation.op = '';
-        waitingForDigit = true;
+        clearClick();
     });
 }
 
 function setupDecimalButton(){
     ui.decimalButton.addEventListener('click', () =>{
-        ui.lowerDisplay.textContent = ui.lowerDisplay.textContent + '.';
-        waitingForDigit = false;
+        decimalClick();
     });
 }
 
@@ -80,21 +98,27 @@ function setupSignButton(){
     });
 }
 
-function setup(){
+function setupKeys(){
+    document.addEventListener('keydown', (e) => {
+        let func = keys[e.key];
+        if (func) func();
+    });
+}
+
+function start(){
     setupDigitButtons();
     setupOperatorButtons();
     setupEqualsButton();
     setupClearButton();
     setupDecimalButton();
     setupSignButton();
+    setupKeys();
 }
 
-
-
+/* HELPER FUNCTIONS FOR BUTTON CLICK LISTENERS */
 function formatLargeNumber(bigNum){
     return bigNum >= roundConstant ? bigNum.toExponential(expDigits) : bigNum;
 }
-
 
 function operate(operator, a, b){
     return Math.round(operators[operator](a,b) * roundConstant) / roundConstant;
@@ -102,6 +126,22 @@ function operate(operator, a, b){
 
 function getOperand(){
     return ui.lowerDisplay.textContent.match(regexDecimal).map( (s) => parseFloat(s))[0];
+}
+
+/* LISTENER FUNCTIONS FOR BUTTON CLICKS */
+
+function clearClick(){
+    ui.lowerDisplay.textContent = 0;
+    ui.upperDisplay.textContent = '';
+    calculation.a = null;
+    calculation.b = null;
+    calculation.op = '';
+    waitingForDigit = true;
+}
+
+function decimalClick(){
+    ui.lowerDisplay.textContent = ui.lowerDisplay.textContent + '.';
+    waitingForDigit = false;
 }
 
 function operatorClick(operator){
@@ -158,4 +198,4 @@ function equalsClick(){
     calculation.a = results;
 }
 
-setup();
+start();
