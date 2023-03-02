@@ -159,7 +159,13 @@ function operatorClick(operator){
         else{
             calculation.b = getOperand();
             let results = operate(calculation.op, calculation.a, calculation.b);
-            console.log(results);
+
+            // Divid by 0
+            if (isNaN(results)){
+                clearClick();
+                return;
+            }
+
             ui.lowerDisplay.textContent = formatLargeNumber(results);
             calculation.a = results;
             calculation.op = operator;
@@ -193,6 +199,11 @@ function equalsClick(){
     }
 
     let results = operate(calculation.op, calculation.a, calculation.b);
+    // Divid by 0
+    if (isNaN(results)){
+        clearClick();
+        return;
+    }
     ui.upperDisplay.textContent = formatLargeNumber(calculation.a) + calculation.op + formatLargeNumber(calculation.b) + '=';
     ui.lowerDisplay.textContent = formatLargeNumber(results);
     calculation.a = results;
